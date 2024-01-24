@@ -99,7 +99,7 @@
 <body>
     <script>
         var showArchivedHistory = false;
-        // Fonction pour afficher une boîte de dialogue demandant la clé API
+        var delayTimer;
         function requestAPIKey() {
             var apiKey = prompt("Veuillez entrer votre clé API Mistral:");
             if (apiKey) {
@@ -117,29 +117,43 @@
         var storedAPIKey = localStorage.getItem("apiKey");
 
         if (!storedAPIKey) {
-            // Si la clé API n'est pas stockée, demandez à l'utilisateur de la fournir
+    // Si la clé API n'est pas stockée, demandez à l'utilisateur de la fournir
             requestAPIKey();
         }
-        // Fonction pour mettre à jour le placeholder avec le texte traduit
+
+// Fonction pour mettre à jour le placeholder avec le texte traduit
         function updatePlaceholder() {
             var userQuestionInput = document.getElementById("userQuestion");
             var placeholderText = translateText('Entrez votre question ici');
             userQuestionInput.setAttribute('placeholder', placeholderText);
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-        // Appelez la fonction une fois que le DOM est prêt
-        updatePlaceholder();
+        document.addEventListener("DOMContentLoaded", function () {
+    // Appelez la fonction une fois que le DOM est prêt
+            updatePlaceholder();
 
-        // Ajoutez un gestionnaire d'événements pour la touche "Entrée" sur le champ de saisie
-        var userQuestionInput = document.getElementById("userQuestion");
-        userQuestionInput.addEventListener("keydown", function(event) {
+    // Ajoutez un gestionnaire d'événements pour le champ de saisie
+            var userQuestionInput = document.getElementById("userQuestion");
+
+            userQuestionInput.addEventListener("input", function () {
+        // Efface le timer précédent s'il existe
+                clearTimeout(delayTimer);
+
+        // Met en place un nouveau timer de 5 secondes
+                delayTimer = setTimeout(function () {
+            // Si le délai est écoulé, appelez la fonction pour envoyer la question
+                    callMistralAPI();
+                }, 5000); // 5000 millisecondes (5 secondes)
+            });
+
+    // Ajoutez un gestionnaire d'événements pour la touche "Entrée" sur le champ de saisie
+        userQuestionInput.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
-                // Si la touche "Entrée" est pressée, appelez la fonction pour envoyer la question
+            // Si la touche "Entrée" est pressée, appelez la fonction pour envoyer la question
                 callMistralAPI();
             }
         });
-    });
+    }); 
     </script>
     <label for="languageSelect">Choisir la langue :</label>
     <select id="languageSelect" onchange="changeLanguage(false)">
@@ -179,6 +193,9 @@
     <div id="warning">
         <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
     </div>
+    <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
+        <button onclick="requestAPIKey()">Changer la clé API</button>
+    </div>    
     <script>
 // Fonction pour changer la langue
 function changeLanguage(sendRequest = true) {
