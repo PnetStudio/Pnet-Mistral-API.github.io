@@ -106,7 +106,7 @@
                 localStorage.setItem("apiKey", apiKey);
                 // Recharge la page pour appliquer la clé API
                 location.reload();
-            } else {
+            }else {
                 // Si l'utilisateur annule, vous pouvez gérer cela ici
                 alert("Vous devez fournir une clé API pour utiliser le service Mistral.");
             }
@@ -183,6 +183,12 @@
         <button onclick="callMistralAPI()">Envoyer la question</button>
         <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
     </div>    
+
+    <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
+        <button onclick="requestAPIKey()">Changer la clé API</button>
+    </div>
+    
+    
     
     <div id="response"></div>
     <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
@@ -373,14 +379,13 @@ function callMistralAPI() {
         "content": entry.question
     }));
 
-    // Ajoute la question actuelle à la liste des questions de l'utilisateur
-    userMessages.push({
+    userMessages = [{
         "role": "user",
         "content_type": "prompt",
         "content": question
-    });
+    }];
 
-    // Ajoute la langue sélectionnée à la liste des questions de l'utilisateur
+// Ajoute la langue sélectionnée à la liste des questions de l'utilisateur
     userMessages.push({
         "role": "user",
         "content_type": "language",
