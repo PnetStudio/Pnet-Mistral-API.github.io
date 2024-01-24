@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mistral API Interface</title>
+    <title>Interface de l'API Mistral</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,8 +58,8 @@
             background-color: #fff; 
         }
         h2.history-title {
-        font-size: 1.5em;
-        color: #333;
+            font-size: 1.5em;
+            color: #333;
         }
         pre {
             background-color: #f4f4f4; 
@@ -68,7 +68,7 @@
             overflow-x: auto; 
         }
 
-        .delete-btn {
+        .delete-btn, .delete-all-btn {
             background-color: #ff4a4a;
             color: white;
             border: none;
@@ -77,20 +77,7 @@
             margin-top: 5px;
         }
 
-        .delete-btn:hover {
-            background-color: #d32f2f;
-        }
-
-        .delete-all-btn {
-            background-color: #ff4a4a;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 5px 10px;
-            margin-top: 10px;
-        }
-
-        .delete-all-btn:hover {
+        .delete-btn:hover, .delete-all-btn:hover {
             background-color: #d32f2f;
         }
     </style>
@@ -98,147 +85,24 @@
 <body>
     <script>
         var showArchivedHistory = false;
-        var delayTimer;
+
         function requestAPIKey() {
             var apiKey = prompt("Veuillez entrer votre clé API Mistral:");
             if (apiKey) {
-                // Stocke la clé API dans le localStorage pour une utilisation ultérieure
                 localStorage.setItem("apiKey", apiKey);
-                // Recharge la page pour appliquer la clé API
                 location.reload();
-            }else {
-                // Si l'utilisateur annule, vous pouvez gérer cela ici
+            } else {
                 alert("Vous devez fournir une clé API pour utiliser le service Mistral.");
             }
         }
 
-        // Vérifie si la clé API est déjà stockée localement
         var storedAPIKey = localStorage.getItem("apiKey");
 
         if (!storedAPIKey) {
-    // Si la clé API n'est pas stockée, demandez à l'utilisateur de la fournir
             requestAPIKey();
         }
 
-// Fonction pour mettre à jour le placeholder avec le texte traduit
-        function updatePlaceholder() {
-            var userQuestionInput = document.getElementById("userQuestion");
-            var placeholderText = translateText('Entrez votre question ici');
-            userQuestionInput.setAttribute('placeholder', placeholderText);
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-    // Appelez la fonction une fois que le DOM est prêt
-            updatePlaceholder();
-
-    // Ajoutez un gestionnaire d'événements pour le champ de saisie
-            var userQuestionInput = document.getElementById("userQuestion");
-
-            userQuestionInput.addEventListener("input", function () {
-        // Efface le timer précédent s'il existe
-                clearTimeout(delayTimer);
-
-        // Met en place un nouveau timer de 5 secondes
-                delayTimer = setTimeout(function () {
-            // Si le délai est écoulé, appelez la fonction pour envoyer la question
-                    callMistralAPI();
-                }, 5000); // 5000 millisecondes (5 secondes)
-            });
-
-    // Ajoutez un gestionnaire d'événements pour la touche "Entrée" sur le champ de saisie
-        userQuestionInput.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-            // Si la touche "Entrée" est pressée, appelez la fonction pour envoyer la question
-                callMistralAPI();
-            }
-        });
-    }); 
-    </script>
-    <label for="languageSelect">Choisir la langue :</label>
-    <select id="languageSelect" onchange="changeLanguage(false)">
-        <option value="français">Français</option>
-        <option value="english">English</option>
-        <option value="español">Español</option>
-        <option value="deutsch">Deutsch</option>
-    </select>
-
-    <h1>Interface Mistral API</h1>
-    
-    <h2>Choisir un modèle</h2>
-    <div>
-        <label for="modelTiny">mistral-tiny</label>
-        <input type="radio" id="modelTiny" name="model" value="mistral-tiny" checked>
-    </div>
-    <div>
-        <label for="modelSmall">mistral-small</label>
-        <input type="radio" id="modelSmall" name="model" value="mistral-small">
-    </div>
-    <div>
-        <label for="modelMedium">mistral-medium</label>
-        <input type="radio" id="modelMedium" name="model" value="mistral-medium">
-    </div><br><br>
-    
-    <div style="width: 80%; margin: auto;">
-        <input type="text" id="userQuestion" placeholder>
-        <button onclick="callMistralAPI()">Envoyer la question</button>
-        <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
-    </div>    
-
-    <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
-        <button onclick="requestAPIKey()">Changer la clé API</button>
-    </div>
-    
-    
-    
-    <div id="response"></div>
-    <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
-    <h2 class="history-title">Historique des Questions/Réponses</h2>
-    <button class="delete-all-btn" onclick="clearHistory()">Supprimer tout l'historique</button>
-    <div id="history"></div>    
-    <div id="warning">
-        <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
-    </div>   
-    <script>
-// Fonction pour changer la langue
-function changeLanguage(sendRequest = true) {
-    var selectedLanguage = document.getElementById("languageSelect").value;
-    localStorage.setItem("selectedLanguage", selectedLanguage);
-
-    // Appelle la fonction callMistralAPI seulement si sendRequest est true
-    if (sendRequest) {
-        callMistralAPI();
-    }
-
-    // Mettez à jour l'interface en fonction de la langue
-    updateInterfaceLanguage();
-
-    // Mettez à jour les textes de l'interface
-    updateInterfaceTexts();
-
-    updatePlaceholder();
-}
-function toggleHistoryView() {
-    showArchivedHistory = !showArchivedHistory;
-    renderHistory();
-}
-
-function updateInterfaceTexts() {
-    // Obtenez la langue sélectionnée
-    var selectedLanguage = getSelectedLanguage();
-
-    // Mettez à jour les textes de l'interface ici en fonction de la langue sélectionnée
-    document.querySelector("label[for='languageSelect']").textContent = translateText("Choisir la langue :");
-    document.querySelector("h1").textContent = translateText("Interface Mistral API");
-    document.querySelector("h2").textContent = translateText("Choisir un modèle");
-    document.querySelector("button").textContent = translateText("Envoyer la question");
-    document.querySelector("h2.history-title").textContent = translateText("Historique des Questions/Réponses");
-    document.querySelector("button.delete-all-btn").textContent = translateText("Supprimer tout l'historique");
-    document.querySelector("button.new-conversation-btn").textContent = translateText("Nouvelle conversation");
-    document.querySelector("button.delete-all-btn").textContent = translateText("Supprimer");
-    document.querySelector("button.toggle-history-btn").textContent = translateText("Voir l'historique archivé");
-}
-
-// Fonction pour traduire le texte
+        // Fonction pour traduire le texte
 function translateText(text) {
     // Implémentez votre mécanisme de traduction ici
     // Vous pouvez utiliser un objet avec des traductions pour chaque langue
@@ -329,6 +193,113 @@ function translateText(text) {
 }
 
 
+        function updatePlaceholder() {
+            var userQuestionInput = document.getElementById("userQuestion");
+            var placeholderText = translateText('Entrez votre question ici');
+            userQuestionInput.setAttribute('placeholder', placeholderText);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+    updatePlaceholder();
+
+    var userQuestionInput = document.getElementById("userQuestion");
+
+    userQuestionInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            callMistralAPI();
+        }
+    });
+
+    // Ajoutez cet appel pour mettre à jour la langue lors du chargement de la page
+    changeLanguage(false);
+});
+    </script>
+    <label for="languageSelect">Choisir la langue :</label>
+    <select id="languageSelect" onchange="changeLanguage(false)">
+        <option value="français">Français</option>
+        <option value="english">English</option>
+        <option value="español">Español</option>
+        <option value="deutsch">Deutsch</option>
+    </select>
+
+    <h1>Interface Mistral API</h1>
+    
+    <h2>Choisir un modèle</h2>
+    <div>
+        <label for="modelTiny">mistral-tiny</label>
+        <input type="radio" id="modelTiny" name="model" value="mistral-tiny" checked>
+    </div>
+    <div>
+        <label for="modelSmall">mistral-small</label>
+        <input type="radio" id="modelSmall" name="model" value="mistral-small">
+    </div>
+    <div>
+        <label for="modelMedium">mistral-medium</label>
+        <input type="radio" id="modelMedium" name="model" value="mistral-medium">
+    </div><br><br>
+    
+    <div style="width: 80%; margin: auto;">
+        <input type="text" id="userQuestion" placeholder>
+        <button onclick="callMistralAPI()">Envoyer la question</button>
+        <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
+    </div>    
+
+    <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
+        <button onclick="requestAPIKey()">Changer la clé API</button>
+    </div>
+    
+    
+    
+    <div id="response"></div>
+    <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
+    <h2 class="history-title">Historique des Questions/Réponses</h2>
+    <button class="delete-all-btn" onclick="clearHistory()">Supprimer tout l'historique</button>
+    <div id="history"></div>    
+    <div id="warning">
+        <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
+    </div>   
+    <script>
+// Fonction pour changer la langue
+function changeLanguage(sendRequest = true) {
+    var selectedLanguage = document.getElementById("languageSelect").value;
+    localStorage.setItem("selectedLanguage", selectedLanguage);
+
+    // Appelle la fonction callMistralAPI seulement si sendRequest est true
+    if (sendRequest) {
+        callMistralAPI();
+    }
+
+    // Mettez à jour l'interface en fonction de la langue
+    updateInterfaceLanguage();
+
+    // Mettez à jour les textes de l'interface
+    updateInterfaceTexts();
+
+    updatePlaceholder();
+}
+function toggleHistoryView() {
+    showArchivedHistory = !showArchivedHistory;
+    renderHistory();
+}
+
+
+function updateInterfaceTexts() {
+    // Obtenez la langue sélectionnée
+    var selectedLanguage = getSelectedLanguage();
+
+    // Mettez à jour les textes de l'interface ici en fonction de la langue sélectionnée
+    document.querySelector("label[for='languageSelect']").textContent = translateText("Choisir la langue :");
+    document.querySelector("h1").textContent = translateText("Interface Mistral API");
+    document.querySelector("h2").textContent = translateText("Choisir un modèle");
+    document.querySelector("button").textContent = translateText("Envoyer la question");
+    document.querySelector("h2.history-title").textContent = translateText("Historique des Questions/Réponses");
+    document.querySelector("button.delete-all-btn").textContent = translateText("Supprimer tout l'historique");
+    document.querySelector("button.new-conversation-btn").textContent = translateText("Nouvelle conversation");
+    document.querySelector("button.delete-all-btn").textContent = translateText("Supprimer");
+    document.querySelector("button.toggle-history-btn").textContent = translateText("Voir l'historique archivé");
+}
+
+
         function updateInterfaceLanguage() {
             // Mettez à jour ici les éléments d'interface en fonction de la langue sélectionnée
             // Par exemple, vous pouvez changer le texte, les étiquettes, etc.
@@ -356,6 +327,8 @@ function translateText(text) {
         var apiCallInProgress = false; 
 
         function callMistralAPI() {
+    console.log("Calling Mistral API...");
+
     if (apiCallInProgress) {
         return;
     }
@@ -379,24 +352,27 @@ function translateText(text) {
     var selectedLanguage = getSelectedLanguage();
 
     // Crée un tableau des messages de l'utilisateur
-    var userMessages = history.map(entry => ({
-        "role": "user",
-        "content_type": "prompt",
-        "content": entry.question
-    }));
+    var userMessages = [
+        {
+            "role": "user",
+            "content_type": "prompt",
+            "content": question
+        },
+        {
+            "role": "user",
+            "content_type": "language",
+            "content": selectedLanguage
+        }
+    ];
 
-    userMessages = [{
-        "role": "user",
-        "content_type": "prompt",
-        "content": question
-    }];
-
-// Ajoute la langue sélectionnée à la liste des questions de l'utilisateur
-    userMessages.push({
-        "role": "user",
-        "content_type": "language",
-        "content": selectedLanguage
-    });
+    // Ajoute les questions précédentes de l'historique
+    userMessages = userMessages.concat(
+        history.map(entry => ({
+            "role": "user",
+            "content_type": "prompt",
+            "content": entry.question
+        }))
+    );
 
     // Prépare la requête vers l'API Mistral
     var xhr = new XMLHttpRequest();
@@ -407,8 +383,12 @@ function translateText(text) {
     });
 
     // Gère la réponse de l'API
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
+    xhr.onreadystatechange = function () {
+    console.log("XHR Ready State:", xhr.readyState, "Status:", xhr.status);
+
+    if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+            console.log("API Response:", xhr.responseText);
             var result = JSON.parse(xhr.responseText);
             var content = result['choices'][0]['message']['content'];
 
@@ -417,23 +397,25 @@ function translateText(text) {
 
             // Ajoute à l'historique
             addToHistory(question, content, selectedModel);
-        } else if (xhr.readyState == 4) {
-            document.getElementById("response").innerHTML = "<p>Erreur lors de la requête. Code de statut : " + xhr.status + '</p>';
+        } else {
+            console.error("Error during request. Status code:", xhr.status);
+            document.getElementById("response").innerHTML = "<p>Error during request. Status code: " + xhr.status + '</p>';
+        }
+
+        // Réinitialisez la variable ici
+        apiCallInProgress = false;
         }
     };
 
-        // Configure et envoie la requête vers l'API Mistral
-        xhr.open("POST", url, true);
+
+    // Configure et envoie la requête vers l'API Mistral
+    xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + apiKey);
     xhr.send(data);
-
-    // Utilisez setTimeout pour réinitialiser apiCallInProgress après un délai
-    setTimeout(function () {
-        apiCallInProgress = false;
-    }, 5000); // ajustez le délai en millisecondes selon vos besoins
 }
+
 
 function addToHistory(question, answer, model) {
     history.push({
