@@ -353,15 +353,21 @@ function translateText(text) {
         let history = JSON.parse(localStorage.getItem("history")) || [];
         renderHistory();
 
-        // Modifiez la fonction callMistralAPI pour inclure la langue sélectionnée
-        // Modifiez la fonction callMistralAPI pour inclure la langue sélectionnée
-function callMistralAPI() {
+        var apiCallInProgress = false; 
+
+        function callMistralAPI() {
+    if (apiCallInProgress) {
+        return;
+    }
+    apiCallInProgress = true;
+
     // Utilisez la première déclaration de apiKey
     var apiKey = localStorage.getItem("apiKey");
 
     // Vérifie si une clé API Mistral a été fournie
     if (!apiKey) {
         alert("Veuillez entrer votre clé API Mistral.");
+        apiCallInProgress = false; // Réinitialisez la variable ici
         return;
     }
 
@@ -416,12 +422,17 @@ function callMistralAPI() {
         }
     };
 
-    // Configure et envoie la requête vers l'API Mistral
-    xhr.open("POST", url, true);
+        // Configure et envoie la requête vers l'API Mistral
+        xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + apiKey);
     xhr.send(data);
+
+    // Utilisez setTimeout pour réinitialiser apiCallInProgress après un délai
+    setTimeout(function () {
+        apiCallInProgress = false;
+    }, 5000); // ajustez le délai en millisecondes selon vos besoins
 }
 
 function addToHistory(question, answer, model) {
