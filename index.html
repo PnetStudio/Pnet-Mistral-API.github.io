@@ -236,11 +236,11 @@ function translateText(text) {
     <h2>Choisir un modèle</h2>
     <div>
         <label for="modelTiny">mistral-tiny</label>
-        <input type="radio" id="modelTiny" name="model" value="mistral-tiny" checked>
+        <input type="radio" id="modelTiny" name="model" value="mistral-tiny">
     </div>
     <div>
         <label for="modelSmall">mistral-small</label>
-        <input type="radio" id="modelSmall" name="model" value="mistral-small">
+        <input type="radio" id="modelSmall" name="model" value="mistral-small" checked>
     </div>
     <div>
         <label for="modelMedium">mistral-medium</label>
@@ -267,8 +267,7 @@ function translateText(text) {
     <div id="warning">
         <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
     </div>   
-    <script>
-// Fonction pour changer la langue
+<script>
 function changeLanguage(sendRequest = true) {
     var selectedLanguage = document.getElementById("languageSelect").value;
     localStorage.setItem("selectedLanguage", selectedLanguage);
@@ -286,11 +285,6 @@ function changeLanguage(sendRequest = true) {
 
     updatePlaceholder();
 }
-function toggleHistoryView() {
-    showArchivedHistory = !showArchivedHistory;
-    renderHistory();
-}
-
 
 function updateInterfaceTexts() {
     // Obtenez la langue sélectionnée
@@ -581,6 +575,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.9</div>
+    <div id="versionInfo">v 0.0.91</div>
 </body>
 </html>
