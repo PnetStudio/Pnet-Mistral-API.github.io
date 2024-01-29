@@ -2,96 +2,57 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interface de l'API Mistral</title>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-    font-size: 50px; /* Taille de la police par défaut pour les appareils mobiles */
-}
+            font-family: Arial, sans-serif;
+            margin: 10px;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-#userQuestion {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-}
+        #userQuestion {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
 
-#response,
-#history {
-    width: 100%;
-    margin: 20px auto;
-    padding: 20px; /* Augmenter la marge intérieure pour un meilleur espacement */
-    background-color: #fff;
-    border: 1px solid #ddd;
-    min-height: 50px;
-    box-sizing: border-box;
-}
+        #response, #history {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
 
-button,
-.delete-btn,
-.delete-all-btn,
-.toggle-history-btn {
-    width: 100%;
-    padding: 25px; /* Augmenter la taille du bouton */
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 25px; /* Augmenter la taille de la police pour les boutons */
-}
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-.delete-btn:hover,
-.delete-all-btn:hover,
-.toggle-history-btn:hover {
-    background-color: #0056b3;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
-.code-block,
-.history-entry {
-    width: 100%;
-}
-
-#versionInfo {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    font-size: 14px;
-}
-
-@media screen and (min-width: 600px) {
-    body {
-        font-size: 23px; /* Taille de la police pour les écrans plus larges */
-    }
-
-    #response,
-    #history {
-        width: 80%;
-    }
-
-    button,
-    .delete-btn,
-    .delete-all-btn,
-    .toggle-history-btn {
-        width: auto;
-        padding: 10px;
-        font-size: 16px;
-    }
-
-    .code-block,
-    .history-entry {
-        width: 80%;
-        margin: auto;
-    }
-}
-
-
+        .code-block, pre {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-left: 3px solid #f36d33;
+            padding: 1em;
+            margin: 1em 0;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
 
         .history-entry {
             border: 1px solid #ddd;
@@ -99,18 +60,14 @@ button,
             margin-bottom: 10px;
             background-color: #fff; 
         }
+
         h2.history-title {
             font-size: 1.5em;
             color: #333;
         }
-        pre {
-            background-color: #f4f4f4; 
-            border-left: 3px solid #f36d33; 
-            padding: 1em;
-            overflow-x: auto; 
-        }
 
         .delete-btn, .delete-all-btn {
+            width: 100%;
             background-color: #ff4a4a;
             color: white;
             border: none;
@@ -118,6 +75,11 @@ button,
             padding: 5px 10px;
             margin-top: 5px;
         }
+
+        .delete-btn:hover, .delete-all-btn:hover {
+            background-color: #d32f2f;
+        }
+
         #versionInfo {
             position: fixed;
             bottom: 10px;
@@ -128,8 +90,16 @@ button,
             font-size: 14px;
         }
 
-        .delete-btn:hover, .delete-all-btn:hover {
-            background-color: #d32f2f;
+        /* Media Query for Mobile Devices */
+        @media only screen and (max-width: 600px) {
+            #history, #response {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            button, .delete-btn, .delete-all-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
