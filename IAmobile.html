@@ -2,36 +2,34 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interface de l'API Mistral</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 10px;
+            margin: 20px;
             padding: 0;
             background-color: #f4f4f4;
             color: #333;
         }
-
         #userQuestion {
             width: 100%;
-            padding: 10px;
+            padding: 15px;
             margin-bottom: 10px;
             box-sizing: border-box;
         }
 
         #response, #history {
-            width: 100%;
-            margin: 10px 0;
+            width: 80%;
+            margin: 20px auto;
             padding: 10px;
             background-color: #fff;
             border: 1px solid #ddd;
+            min-height: 50px;
             box-sizing: border-box;
         }
 
         button {
-            width: 100%;
-            padding: 10px;
+            padding: 10px 20px;
             background-color: #007bff;
             color: white;
             border: none;
@@ -43,8 +41,7 @@
             background-color: #0056b3;
         }
 
-        .code-block, pre {
-            width: 100%;
+        .code-block {
             background-color: #f0f0f0;
             border-left: 3px solid #f36d33;
             padding: 1em;
@@ -60,14 +57,18 @@
             margin-bottom: 10px;
             background-color: #fff; 
         }
-
         h2.history-title {
             font-size: 1.5em;
             color: #333;
         }
+        pre {
+            background-color: #f4f4f4; 
+            border-left: 3px solid #f36d33; 
+            padding: 1em;
+            overflow-x: auto; 
+        }
 
         .delete-btn, .delete-all-btn {
-            width: 100%;
             background-color: #ff4a4a;
             color: white;
             border: none;
@@ -75,11 +76,6 @@
             padding: 5px 10px;
             margin-top: 5px;
         }
-
-        .delete-btn:hover, .delete-all-btn:hover {
-            background-color: #d32f2f;
-        }
-
         #versionInfo {
             position: fixed;
             bottom: 10px;
@@ -90,16 +86,8 @@
             font-size: 14px;
         }
 
-        /* Media Query for Mobile Devices */
-        @media only screen and (max-width: 600px) {
-            #history, #response {
-                width: 100%;
-                margin: 10px 0;
-            }
-
-            button, .delete-btn, .delete-all-btn {
-                width: 100%;
-            }
+        .delete-btn:hover, .delete-all-btn:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -267,8 +255,9 @@ function translateText(text) {
 
     <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
         <button onclick="requestAPIKey()">Changer la clé API</button>
-        <button id="mobileVersionBtn" onclick="openMobileVersion()">Version Mobile</button>
     </div>
+    
+    
     
     <div id="response"></div>
     <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
@@ -311,7 +300,6 @@ function updateInterfaceTexts() {
     document.querySelector("button.new-conversation-btn").textContent = translateText("Nouvelle conversation");
     document.querySelector("button.delete-all-btn").textContent = translateText("Supprimer");
     document.querySelector("button.toggle-history-btn").textContent = translateText("Voir l'historique archivé");
-    
 }
 
 
@@ -430,9 +418,7 @@ function updateInterfaceTexts() {
     xhr.setRequestHeader("Authorization", "Bearer " + apiKey);
     xhr.send(data);
 }
-//function openMobileVersion() {
-//            window.location.href = 'IAmobile.html';
-//        }
+
 
 function addToHistory(question, answer, model) {
     history.push({
@@ -589,6 +575,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.97</div>
+    <div id="versionInfo">v 0.0.91</div>
 </body>
 </html>

@@ -98,14 +98,14 @@
         function requestAPIKey() {
             var apiKey = prompt("Veuillez entrer votre clé API Mistral / Please enter your Mistral API key :");
             if (apiKey) {
-                sessionStorage.setItem("apiKey", apiKey);
+                localStorage.setItem("apiKey", apiKey);
                 location.reload();
             } else {
                 alert("Vous devez fournir une clé API pour utiliser le service Mistral. / You must provide an API key to use the Mistral service.");
             }
         }
 
-        var storedAPIKey = sessionStorage.getItem("apiKey");
+        var storedAPIKey = localStorage.getItem("apiKey");
 
         if (!storedAPIKey) {
             requestAPIKey();
@@ -255,8 +255,9 @@ function translateText(text) {
 
     <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
         <button onclick="requestAPIKey()">Changer la clé API</button>
-        <button id="mobileVersionBtn" onclick="openMobileVersion()">Version Mobile</button>
     </div>
+    
+    
     
     <div id="response"></div>
     <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
@@ -299,7 +300,6 @@ function updateInterfaceTexts() {
     document.querySelector("button.new-conversation-btn").textContent = translateText("Nouvelle conversation");
     document.querySelector("button.delete-all-btn").textContent = translateText("Supprimer");
     document.querySelector("button.toggle-history-btn").textContent = translateText("Voir l'historique archivé");
-    
 }
 
 
@@ -417,10 +417,8 @@ function updateInterfaceTexts() {
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + apiKey);
     xhr.send(data);
-    }
-    function openMobileVersion() {
-                window.location.href = 'IAmobile.html';
-            }
+}
+
 
 function addToHistory(question, answer, model) {
     history.push({
@@ -577,6 +575,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.97</div>
+    <div id="versionInfo">v 0.0.92</div>
 </body>
 </html>
