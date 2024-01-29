@@ -5,52 +5,55 @@
     <title>Interface de l'API Mistral</title>
     <style>
         body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        padding: 0;
-        background-color: #f4f4f4;
-        color: #333;
-    }
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    font-size: 50px; /* Taille de la police par défaut pour les appareils mobiles */
+}
 
-    #userQuestion {
-        width: 100%;
-        padding: 15px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
+#userQuestion {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
 
-    #response,
-    #history {
-        width: 100%; /* Full width for mobile */
-        margin: 20px auto;
-        padding: 10px;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        min-height: 50px;
-        box-sizing: border-box;
-    }
+#response,
+#history {
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px; /* Augmenter la marge intérieure pour un meilleur espacement */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    min-height: 50px;
+    box-sizing: border-box;
+}
 
-    button {
-        width: 100%; /* Full width for mobile */
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-    }
+button,
+.delete-btn,
+.delete-all-btn,
+.toggle-history-btn {
+    width: 100%;
+    padding: 25px; /* Augmenter la taille du bouton */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 25px; /* Augmenter la taille de la police pour les boutons */
+}
 
-    .delete-btn,
-    .delete-all-btn,
-    .toggle-history-btn {
-        width: 100%; /* Full width for mobile */
-        margin-top: 5px;
-    }
+.delete-btn:hover,
+.delete-all-btn:hover,
+.toggle-history-btn:hover {
+    background-color: #0056b3;
+}
 
-    .code-block,
-    .history-entry {
-        width: 100%; /* Full width for mobile */
-    }
+.code-block,
+.history-entry {
+    width: 100%;
+}
 
 #versionInfo {
     position: fixed;
@@ -58,15 +61,13 @@
     right: 10px;
     background-color: #333;
     color: white;
-    padding: 5px 10px;
+    padding: 10px;
     font-size: 14px;
 }
 
-@media screen and (min-width: 900px) {
-    /* Add styles for larger screens if needed */
+@media screen and (min-width: 600px) {
     body {
-        max-width: 900px; /* Example: Set a max-width for larger screens */
-        margin: 20px auto;
+        font-size: 23px; /* Taille de la police pour les écrans plus larges */
     }
 
     #response,
@@ -78,15 +79,18 @@
     .delete-btn,
     .delete-all-btn,
     .toggle-history-btn {
-        width: auto; /* Reset width for larger screens */
+        width: auto;
+        padding: 10px;
+        font-size: 16px;
     }
 
     .code-block,
     .history-entry {
-        width: 80%; /* Adjust width for larger screens */
+        width: 80%;
         margin: auto;
     }
-    }
+}
+
 
 
         .history-entry {
