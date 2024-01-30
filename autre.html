@@ -16,12 +16,14 @@
             padding: 15px;
             margin-bottom: 10px;
             box-sizing: border-box;
+            font-size: 16px;
+            height: 130px;
         }
-
         #response, #history {
             width: 80%;
             margin: 20px auto;
             padding: 10px;
+            font-size: 16px;
             background-color: #fff;
             border: 1px solid #ddd;
             min-height: 50px;
@@ -40,7 +42,6 @@
         button:hover {
             background-color: #0056b3;
         }
-
         .code-block {
             background-color: #f0f0f0;
             border-left: 3px solid #f36d33;
@@ -57,6 +58,15 @@
             margin-bottom: 10px;
             background-color: #fff; 
         }
+        .warning-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 0;
+            margin-top: 0;
+        }
         h2.history-title {
             font-size: 1.5em;
             color: #333;
@@ -67,6 +77,29 @@
             padding: 1em;
             overflow-x: auto; 
         }
+        #toggleSidebarBtn {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 0%;
+            background-color: #5c5959;
+            overflow-x: hidden;
+            transition: 0s;
+        }       
 
         .delete-btn, .delete-all-btn {
             background-color: #ff4a4a;
@@ -200,29 +233,67 @@ function translateText(text) {
     var selectedLanguage = getSelectedLanguage();
     return translations[text][selectedLanguage] || text;
 }
+document.addEventListener("DOMContentLoaded", function () {
+    var toggleSidebarBtn = document.getElementById("toggleSidebarBtn");
+    var sidebar = document.getElementById("sidebar");
 
-
-        function updatePlaceholder() {
-            var userQuestionInput = document.getElementById("userQuestion");
-            var placeholderText = translateText('Entrez votre question ici');
-            userQuestionInput.setAttribute('placeholder', placeholderText);
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-    updatePlaceholder();
-
-    var userQuestionInput = document.getElementById("userQuestion");
-
-    userQuestionInput.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            callMistralAPI();
+    toggleSidebarBtn.addEventListener("click", function () {
+        if (sidebar.style.width === "0%" || sidebar.style.width === "") {
+            // Ouvre la colonne
+            sidebar.style.width = "16.6667%"; // 1/6 de la largeur de l'écran
+            toggleSidebarBtn.style.marginRight = "16.6667%"; // Décale le bouton vers la gauche
+            toggleSidebarBtn.textContent = ">";
+        } else {
+            // Ferme la colonne
+            sidebar.style.width = "0%";
+            toggleSidebarBtn.style.marginRight = "0"; // Réinitialise la marge
+            toggleSidebarBtn.textContent = "<";
         }
     });
 
-    // Ajoutez cet appel pour mettre à jour la langue lors du chargement de la page
-    changeLanguage(false);
+    function updatePlaceholder() {
+        var userQuestionInput = document.getElementById("userQuestion");
+        var placeholderText = translateText('Entrez votre question ici');
+        userQuestionInput.setAttribute('placeholder', placeholderText);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        updatePlaceholder();
+
+        var userQuestionInput = document.getElementById("userQuestion");
+
+        userQuestionInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                callMistralAPI();
+            }
+
+            // Ajoutez cet appel pour mettre à jour la langue lors du chargement de la page
+            changeLanguage(false);
+        });
+    });
+
+    // Ajout d'un écouteur de redimensionnement de la fenêtre pour réinitialiser la marge du bouton lorsque la fenêtre est redimensionnée
+    window.addEventListener("resize", function () {
+        if (sidebar.style.width === "0%" || sidebar.style.width === "") {
+            toggleSidebarBtn.style.marginRight = "0"; // Réinitialise la marge lorsque la colonne est fermée
+        } else {
+            toggleSidebarBtn.style.marginRight = sidebar.style.width; // Ajuste la marge en fonction de la largeur de la colonne ouverte
+        }
+    });
+
+    // Ajout d'une transition CSS sur la propriété margin-right
+    toggleSidebarBtn.style.transition = "margin-right 0s ease-in-out";
+
+    // Ajout d'un écouteur de redimensionnement de la fenêtre pour réinitialiser la marge du bouton lorsque la fenêtre est redimensionnée
+    window.addEventListener("resize", function () {
+        if (sidebar.style.width === "0%" || sidebar.style.width === "") {
+            toggleSidebarBtn.style.marginRight = "0"; // Réinitialise la marge lorsque la colonne est fermée
+        } else {
+            toggleSidebarBtn.style.marginRight = sidebar.style.width; // Ajuste la marge en fonction de la largeur de la colonne ouverte
+        }
+    });
 });
-    </script>
+</script>
     <label for="languageSelect">Choisir la langue :</label>
     <select id="languageSelect" onchange="changeLanguage(false)">
         <option value="français">Français</option>
@@ -248,10 +319,14 @@ function translateText(text) {
     </div><br><br>
     
     <div style="width: 80%; margin: auto;">
-        <input type="text" id="userQuestion" placeholder>
+        <textarea id="userQuestion" placeholder="Entrez votre question ici"></textarea>
         <button onclick="callMistralAPI()">Envoyer la question</button>
         <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
-    </div>    
+    </div>   
+    <div>
+    <button id="toggleSidebarBtn"><</button> <!-- pas un erreur -->
+
+    <div id="sidebar"></div>
 
     <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
         <button onclick="requestAPIKey()">Changer la clé API</button>
@@ -264,9 +339,9 @@ function translateText(text) {
     <h2 class="history-title">Historique des Questions/Réponses</h2>
     <button class="delete-all-btn" onclick="clearHistory()">Supprimer tout l'historique</button>
     <div id="history"></div>    
-    <div id="warning">
+    <div id="warning" class="warning-container">
         <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
-    </div>   
+    </div> 
 <script>
 function changeLanguage(sendRequest = true) {
     var selectedLanguage = document.getElementById("languageSelect").value;
@@ -485,9 +560,6 @@ function updateResponse(content) {
             history = [];
             saveHistory();
             }
-
-
-
             function renderHistory() {
                 const historyDiv = document.getElementById("history");
                 historyDiv.innerHTML = '';
@@ -581,6 +653,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.93</div>
+    <div id="versionInfo">v 0.0.95</div>
 </body>
 </html>

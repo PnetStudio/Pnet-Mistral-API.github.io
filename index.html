@@ -16,12 +16,15 @@
             padding: 15px;
             margin-bottom: 10px;
             box-sizing: border-box;
+            font-size: 16px;
+            height: 130px;
         }
 
         #response, #history {
             width: 80%;
             margin: 20px auto;
             padding: 10px;
+            font-size: 16px;
             background-color: #fff;
             border: 1px solid #ddd;
             min-height: 50px;
@@ -56,6 +59,15 @@
             padding: 10px;
             margin-bottom: 10px;
             background-color: #fff; 
+        }
+        .warning-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 0;
+            margin-top: 0;
         }
         h2.history-title {
             font-size: 1.5em;
@@ -248,7 +260,7 @@ function translateText(text) {
     </div><br><br>
     
     <div style="width: 80%; margin: auto;">
-        <input type="text" id="userQuestion" placeholder>
+        <textarea id="userQuestion" placeholder="Entrez votre question ici"></textarea>
         <button onclick="callMistralAPI()">Envoyer la question</button>
         <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
     </div>    
@@ -264,9 +276,9 @@ function translateText(text) {
     <h2 class="history-title">Historique des Questions/Réponses</h2>
     <button class="delete-all-btn" onclick="clearHistory()">Supprimer tout l'historique</button>
     <div id="history"></div>    
-    <div id="warning">
+    <div id="warning" class="warning-container">
         <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
-    </div>   
+    </div> 
 <script>
 function changeLanguage(sendRequest = true) {
     var selectedLanguage = document.getElementById("languageSelect").value;
@@ -581,6 +593,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.93</div>
+    <div id="versionInfo">v 0.0.94</div>
 </body>
 </html>
