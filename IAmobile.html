@@ -1,45 +1,59 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Interface de l'API Mistral</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        #userQuestion {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
+        /* Styles communs pour les deux versions (PC et mobile) */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
 
-        #response, #history {
-            width: 80%;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            min-height: 50px;
-            box-sizing: border-box;
-        }
+#userQuestion {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
 
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
+#response, #history {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    min-height: 50px;
+    box-sizing: border-box;
+}
 
-        button:hover {
-            background-color: #0056b3;
-        }
+button {
+    padding: 15px 25px; /* Augmentation de la taille du bouton */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px; /* Augmentation de la taille de la police */
+}
+
+/* Styles spécifiques pour les appareils mobiles */
+@media only screen and (max-width: 1440px) {
+    #response, #history {
+        width: 90%;
+    }
+
+    button {
+        padding: 12px 22px; /* Ajustement de la taille du bouton sur mobile */
+        font-size: 24px; /* Ajustement de la taille de la police sur mobile */
+    }
+}
+
+/* Ajoutez d'autres règles de média-query au besoin pour d'autres tailles d'écran */
+
 
         .code-block {
             background-color: #f0f0f0;
@@ -98,14 +112,14 @@
         function requestAPIKey() {
             var apiKey = prompt("Veuillez entrer votre clé API Mistral / Please enter your Mistral API key :");
             if (apiKey) {
-                sessionStorage.setItem("apiKey", apiKey);
+                localStorage.setItem("apiKey", apiKey);
                 location.reload();
             } else {
                 alert("Vous devez fournir une clé API pour utiliser le service Mistral. / You must provide an API key to use the Mistral service.");
             }
         }
 
-        var storedAPIKey = sessionStorage.getItem("apiKey");
+        var storedAPIKey = localStorage.getItem("apiKey");
 
         if (!storedAPIKey) {
             requestAPIKey();
@@ -557,17 +571,19 @@ function updateResponse(content) {
         <section id="legal-notice">
             <h2>Legal Notice</h2>
     
-            <p>This website is the property of ©PNETStudio.</p>
+            <p>This website is the property of © 2024 PNETStudio.</p>
     
             <p>PNETStudio<br>
             Email: pnet.group@outlook.com</p>
             <p>Design and Development: ©PNETStudio</p>
             
             <h3>Personal Data Protection</h3>
+
+            <p>What are these?</p>
     
             <h3>Terms of Use</h3>
     
-            <p>By using this site, you agree to the current terms of use. ©PNETStudio reserves the right to modify these terms at any time, without prior notice.</p>
+            <p>By using this site, you agree to the current terms of use. © 2024 PNETStudio reserves the right to modify these terms at any time, without prior notice.</p>
     
             <h3>Contact</h3>
     
@@ -575,6 +591,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.91</div>
+    <div id="versionInfo">v 0.0.933-B</div>
 </body>
 </html>
