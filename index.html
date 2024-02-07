@@ -209,6 +209,7 @@
             // Efface le contenu précédent
             document.getElementById("response").innerHTML = '';
 
+            const escapedContent = escapeHtml(content);
             // Sépare les blocs de code du reste du texte
             const sections = content.split(/(```.*?```)/gs);
 
@@ -277,8 +278,9 @@
             reversedHistory.forEach((entry, index) => {
                 const entryDiv = document.createElement("div");
                 entryDiv.className = "history-entry";
-            
-                const formattedAnswer = entry.answer.replace(/(```.*?```)/gs, function(match) {
+
+                const escapedContent = escapeHtml(entry.answer);
+                const formattedAnswer = escapedContent.replace(/(```.*?```)/gs, function(match) {
                     return `<div class="code-block">${match.slice(3, -3)}</div>`;
                 });
             
@@ -325,6 +327,18 @@
 
         function saveHistory() {
             localStorage.setItem("history", JSON.stringify(history));
+        }
+        // Fonction pour échapper les balises HTML
+        function escapeHtml(text) {
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+        
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
     </script>
     <label for="languageSelect">Choisir la langue :</label>
@@ -391,6 +405,6 @@
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.994</div>
+    <div id="versionInfo">v 0.0.995</div>
 </body>
 </html>
