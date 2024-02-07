@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -465,28 +464,31 @@ function updateInterfaceTexts() {
 
     // Gère la réponse de l'API
     xhr.onreadystatechange = function () {
-    console.log("XHR Ready State:", xhr.readyState, "Status:", xhr.status);
+        console.log("XHR Ready State:", xhr.readyState, "Status:", xhr.status);
 
-    if (xhr.readyState == 4) {
-        if (xhr.status == 200) {
-            console.log("API Response:", xhr.responseText);
-            var result = JSON.parse(xhr.responseText);
-            var content = result['choices'][0]['message']['content'];
-            
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                console.log("API Response:", xhr.responseText);
+                var result = JSON.parse(xhr.responseText);
+                var content = result['choices'][0]['message']['content'];
 
-            // Met à jour la réponse dans l'interface
-            updateResponse(content);
 
-            // Ajoute à l'historique
-            addToHistory(question, content, selectedModel);
-        } else {
-            console.error("Error during request. Status code:", xhr.status);
-            document.getElementById("response").innerHTML = "<p>Error during request. Status code: " + xhr.status + '</p>';
+                // Met à jour la réponse dans l'interface
+                updateResponse(content);
+
+                // Ajoute à l'historique
+                addToHistory(question, content, selectedModel);
+            } else {
+                console.error("Error during request. Status code:", xhr.status);
+                document.getElementById("response").innerHTML = "<p>Error during request. Status code: " + xhr.status + '</p>';
+                document.getElementById("loading-icon").style.display = "none";
+            }
+
+            // Masquer l'icône de chargement
             document.getElementById("loading-icon").style.display = "none";
-        }
 
-        // Réinitialisez la variable ici
-        apiCallInProgress = false;
+            // Réinitialisez la variable ici
+            apiCallInProgress = false;
         }
     };
 
@@ -671,6 +673,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.97</div>
+    <div id="versionInfo">v 0.0.98</div>
 </body>
 </html>
