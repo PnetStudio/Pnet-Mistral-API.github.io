@@ -325,7 +325,9 @@ function translateText(text) {
     
     <div style="width: 80%; margin: auto;">
         <textarea id="userQuestion" placeholder="Entrez votre question ici"></textarea>
-        <button onclick="callMistralAPI()">Envoyer la question</button>
+        <!--<button onclick="callMistralAPI()">Envoyer la question</button>-->
+        <button id="sendQuestionBtn" onclick="callMistralAPI()">Envoyer la question</button>
+        <img id="loading-icon" src="chemin_vers_votre_icone_de_chargement" alt="Loading..." style="display: none;">
         <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
     </div>    
     <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
@@ -410,6 +412,7 @@ function updateInterfaceTexts() {
     if (apiCallInProgress) {
         return;
     }
+    document.getElementById("loading-icon").style.display = "inline";
     apiCallInProgress = true;
 
     // Utilisez la première déclaration de apiKey
@@ -469,6 +472,7 @@ function updateInterfaceTexts() {
             console.log("API Response:", xhr.responseText);
             var result = JSON.parse(xhr.responseText);
             var content = result['choices'][0]['message']['content'];
+            
 
             // Met à jour la réponse dans l'interface
             updateResponse(content);
@@ -478,6 +482,7 @@ function updateInterfaceTexts() {
         } else {
             console.error("Error during request. Status code:", xhr.status);
             document.getElementById("response").innerHTML = "<p>Error during request. Status code: " + xhr.status + '</p>';
+            document.getElementById("loading-icon").style.display = "none";
         }
 
         // Réinitialisez la variable ici
@@ -666,6 +671,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.96</div>
+    <div id="versionInfo">v 0.0.97</div>
 </body>
 </html>
