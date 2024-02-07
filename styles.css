@@ -1,0 +1,147 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+#userQuestion {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    height: 130px;
+}
+
+#response, #history {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    min-height: 50px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.code-block {
+    background-color: #f0f0f0;
+    border-left: 3px solid #f36d33;
+    padding: 1em;
+    margin: 1em 0;
+    font-family: monospace;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+.history-entry {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff; 
+}
+.warning-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 0;
+    margin-top: 0;
+}
+h2.history-title {
+    font-size: 1.5em;
+    color: #333;
+}
+pre {
+    background-color: #f4f4f4; 
+    border-left: 3px solid #f36d33; 
+    padding: 1em;
+    overflow-x: auto; 
+}
+
+.delete-btn, .delete-all-btn {
+    background-color: #ff4a4a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-top: 5px;
+}
+#versionInfo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.delete-btn:hover, .delete-all-btn:hover {
+    background-color: #d32f2f;
+}
+/* Ajoutez les styles pour le thème sombre */
+body.dark {
+  background-color: #2b2b2b;
+  color: #ddd;
+}
+body.dark .history-title {
+  color: #f0f0f0;
+}
+body.dark #userQuestion {
+  background-color: #f0f0f0;
+}
+body.dark #response, body.dark #history {
+  background-color: #3a3a3a;
+  border: 1px solid #444;
+}
+body.dark button {
+  background-color: #3a3a3a;
+  color: #ddd;
+}
+body.dark button:hover {
+  background-color: #4a4a4a;
+}
+body.dark .code-block {
+  background-color: #212121;
+  border-left: 3px solid #9e2c30;
+}
+body.dark .history-entry {
+  background-color: #2a2a2a;
+}
+body.dark .delete-btn, body.dark .delete-all-btn {
+  background-color: #ff4a4a;
+  color: white;
+}
+body.dark .delete-btn:hover, body.dark .delete-all-btn:hover {
+  background-color: #d32f2f;
+}
+body.dark #versionInfo {
+  background-color: #333;
+}
+#theme-toggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
