@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -285,11 +286,12 @@ function translateText(text) {
             document.getElementById("theme-toggle").addEventListener("click", function () {
                 document.body.classList.toggle("dark");
                 if (document.body.classList.contains("dark")) {
-                    this.textContent = "Thème clair";
-                    localStorage.setItem('theme', 'dark'); // Ajoutez cette ligne
+                    this.textContent = "Light";
+                    localStorage.setItem('theme', 'dark');
                 } else {
-                    this.textContent = "Thème sombre";
-                    localStorage.removeItem('theme'); // Ajoutez cette ligne
+                    this.textContent = "Dark";
+                    localStorage.removeItem('theme');
+
                 }
             });
 
@@ -328,7 +330,7 @@ function translateText(text) {
     </div>    
     <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
         <button onclick="requestAPIKey()">Changer la clé API</button>
-        <button id="theme-toggle" style="position: fixed; top: 50px; right: 10px;">Thème sombre</button>
+        <button id="theme-toggle" style="position: fixed; top: 50px; right: 10px;">Dark</button>
     </div>
     
     <div id="response"></div>
@@ -560,12 +562,14 @@ function updateResponse(content) {
             }
             function updateTheme() {
                 var savedTheme = localStorage.getItem('theme');
+                var themeToggle = document.getElementById("theme-toggle");
+                        
                 if (savedTheme === 'dark') {
                     document.body.classList.add('dark');
-                    document.getElementById("theme-toggle").textContent = "Thème clair";
+                    themeToggle.textContent = "Light";
                 } else {
                     document.body.classList.remove('dark');
-                    document.getElementById("theme-toggle").textContent = "Thème sombre";
+                    themeToggle.textContent = "Dark";
                 }
             }
 
@@ -662,6 +666,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.95</div>
+    <div id="versionInfo">v 0.0.96</div>
 </body>
 </html>
