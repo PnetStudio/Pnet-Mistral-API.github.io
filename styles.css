@@ -122,8 +122,12 @@ body.dark .code-block {
   border-left: 3px solid #9e2c30;
 }
 body.dark .history-entry {
-  background-color: #2a2a2a;
+    background-color: #3a3a3a;
+    border: 1px solid #444;
 }
+/*body.dark .history-entry {
+  background-color: #2a2a2a;
+}*/
 body.dark .delete-btn, body.dark .delete-all-btn {
   background-color: #ff4a4a;
   color: white;

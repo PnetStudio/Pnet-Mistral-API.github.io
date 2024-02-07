@@ -208,10 +208,10 @@
         function updateResponse(content) {
             // Efface le contenu précédent
             document.getElementById("response").innerHTML = '';
-        
+
             // Sépare les blocs de code du reste du texte
             const sections = content.split(/(```.*?```)/gs);
-        
+
             sections.forEach(section => {
                 if (section.startsWith("```") && section.endsWith("```")) {
                     // Crée et affiche le bloc de code
@@ -221,12 +221,16 @@
                     codeBlock.textContent = codeContent;
                     document.getElementById("response").appendChild(codeBlock);
                 } else {
-                    // Affiche le texte normal
+                    // Ajoute une indentation aux lignes commençant par un numéro suivi d'un point
+                    const indentedSection = section.replace(/^\s*([\d.]+)\s*/gm, '<br>$1.<br>');
+                
+                    // Crée et affiche le bloc de texte mis à jour
                     const textBlock = document.createElement('div');
-                    textBlock.textContent = section;
+                    textBlock.className = 'text-block';  // Ajout d'une classe pour le bloc de texte
+                    textBlock.innerHTML = indentedSection;
                     document.getElementById("response").appendChild(textBlock);
-                    }
-                });
+                }
+            });
         }
         function startNewConversation() {
             // Archiver l'historique actuel sans affecter l'affichage actuel
@@ -269,23 +273,23 @@
             historyDiv.innerHTML = '';
             const displayedHistory = showArchivedHistory ? getArchivedHistory() : history;
             const reversedHistory = displayedHistory.slice().reverse();
+
             reversedHistory.forEach((entry, index) => {
-            // Créez un nouveau div pour l'entrée d'historique
-            const entryDiv = document.createElement("div");
-            entryDiv.className = "history-entry";
-            // Utilisez des éléments de texte préformaté pour le code
-            const formattedAnswer = entry.answer.replace(/(```.*?```)/gs, function(match) {
-                return `<pre>${match.slice(3, -3)}</pre>`; // Retirez les backticks et utilisez la balise <pre>
-            });
-            // Construisez le contenu HTML avec la question, la réponse formatée et le modèle
-            entryDiv.innerHTML = `
-                <p><strong>Question :</strong> ${entry.question}</p>
-                <p><strong>Réponse :</strong></p>
-                ${formattedAnswer}
-                <p><strong>Modèle :</strong> ${entry.model}</p>
-                <button class="delete-btn" onclick="deleteEntry(${index})">${translateText("Supprimer")}</button>`;
-            // Ajoutez le div formaté à l'historique
-            historyDiv.appendChild(entryDiv);
+                const entryDiv = document.createElement("div");
+                entryDiv.className = "history-entry";
+            
+                const formattedAnswer = entry.answer.replace(/(```.*?```)/gs, function(match) {
+                    return `<div class="code-block">${match.slice(3, -3)}</div>`;
+                });
+            
+                entryDiv.innerHTML = `
+                    <p><strong>Question :</strong> ${entry.question}</p>
+                    <p><strong>Réponse :</strong></p>
+                    ${formattedAnswer}
+                    <p><strong>Modèle :</strong> ${entry.model}</p>
+                    <button class="delete-btn" onclick="deleteEntry(${index})">${translateText("Supprimer")}</button>`;
+            
+                historyDiv.appendChild(entryDiv);
             });
         }
         function getArchivedHistory() {
@@ -387,6 +391,6 @@
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.98</div>
+    <div id="versionInfo">v 0.0.994</div>
 </body>
 </html>
