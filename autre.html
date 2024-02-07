@@ -29,6 +29,24 @@
             min-height: 50px;
             box-sizing: border-box;
         }
+        #sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 0%;
+            background-color: #5c5959;
+            overflow-x: hidden;
+            transition: 0s;
+            z-index: 2; /* Assurez-vous que la barre latérale a un z-index inférieur au bouton */
+        }
+
+        #apiKeyContainer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 0; /* Le bouton aura un z-index supérieur */
+        }
 
         button {
             padding: 10px 20px;
@@ -328,12 +346,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div id="sidebar"></div>
 
-    <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
+    <div id="apiKeyContainer">
         <button onclick="requestAPIKey()">Changer la clé API</button>
     </div>
     
-    
-    
+    <div id="sidebar"></div>
+   
     <div id="response"></div>
     <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
     <h2 class="history-title">Historique des Questions/Réponses</h2>
@@ -537,29 +555,70 @@ function updateResponse(content) {
         });
         }
         function startNewConversation() {
-            // Archiver l'historique actuel sans affecter l'affichage actuel
-            archiveHistory();
-            // Rafraîchir seulement l'affichage de l'historique
-            renderHistory();
-        }
+    // Archiver l'historique actuel sans affecter l'affichage actuel
+    archiveHistory();
+    
+    // Rafraîchir seulement l'affichage de l'historique
+    renderHistory();
+
+    // Ajouter un bouton pour la nouvelle sauvegarde dans la colonne de gauche
+    addSavedConversationButton();
+}
+
+function addSavedConversationButton() {
+    // Récupérer la colonne de gauche
+    var sidebar = document.getElementById("sidebar");
+
+    // Créer un nouveau bouton pour la nouvelle sauvegarde
+    var newConversationButton = document.createElement("button");
+
+    // Utiliser le début de la première question comme nom de bouton
+    var firstQuestion = history.length > 0 ? history[0].question : "Unknown";
+    var buttonLabel = "Conversation: " + firstQuestion.substring(0, 10); // Modifier 10 selon vos besoins
+
+    newConversationButton.textContent = buttonLabel;
+    
+    newConversationButton.onclick = function() {
+        // Charger cette sauvegarde et afficher dans l'historique principal
+        loadSavedConversation(history.length);
+    };
+
+    // Ajouter le bouton à la colonne de gauche
+    sidebar.appendChild(newConversationButton);
+}
+function loadSavedConversation(index) {
+    // Charger la sauvegarde spécifique depuis l'archivage
+    const savedHistory = JSON.parse(localStorage.getItem("archivedHistory")) || [];
+
+    if (index < savedHistory.length) {
+        const savedEntry = savedHistory[index];
+
+        // Ajouter la sauvegarde à l'historique principal
+        addToHistory(savedEntry.question, savedEntry.answer, savedEntry.model);
+
+        // Rafraîchir l'affichage de l'historique
+        renderHistory();
+    }
+}
+
         function toggleHistoryView() {
             showArchivedHistory = !showArchivedHistory;
             renderHistory(); // Make sure to call the renderHistory function after toggling
         }
         function archiveHistory() {
-            // Récupérer l'historique actuel depuis le stockage local
-           const archivedHistory = JSON.parse(localStorage.getItem("archivedHistory")) || [];
+    // Récupérer l'historique actuel depuis le stockage local
+    const archivedHistory = JSON.parse(localStorage.getItem("archivedHistory")) || [];
 
-            // Ajouter l'historique actuel à l'archive
-            archivedHistory.push(...history);
+    // Ajouter l'historique actuel à l'archive
+    archivedHistory.push(...history);
 
-            // Sauvegarder l'archive dans le stockage local
-            localStorage.setItem("archivedHistory", JSON.stringify(archivedHistory));
+    // Sauvegarder l'archive dans le stockage local
+    localStorage.setItem("archivedHistory", JSON.stringify(archivedHistory));
 
-             // Effacer l'historique actuel
-            history = [];
-            saveHistory();
-            }
+    // Effacer l'historique actuel
+    history = [];
+    saveHistory();
+}
             function renderHistory() {
                 const historyDiv = document.getElementById("history");
                 historyDiv.innerHTML = '';
@@ -653,6 +712,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.95</div>
+    <div id="versionInfo">v 0.0.951</div>
 </body>
 </html>

@@ -101,6 +101,56 @@
         .delete-btn:hover, .delete-all-btn:hover {
             background-color: #d32f2f;
         }
+        /* Ajoutez les styles pour le thème sombre */
+        body.dark {
+          background-color: #2b2b2b;
+          color: #ddd;
+        }
+        body.dark .history-title {
+          color: #f0f0f0;
+        }
+        body.dark #userQuestion {
+          background-color: #f0f0f0;
+        }
+        body.dark #response, body.dark #history {
+          background-color: #3a3a3a;
+          border: 1px solid #444;
+        }
+        body.dark button {
+          background-color: #3a3a3a;
+          color: #ddd;
+        }
+        body.dark button:hover {
+          background-color: #4a4a4a;
+        }
+        body.dark .code-block {
+          background-color: #212121;
+          border-left: 3px solid #9e2c30;
+        }
+        body.dark .history-entry {
+          background-color: #2a2a2a;
+        }
+        body.dark .delete-btn, body.dark .delete-all-btn {
+          background-color: #ff4a4a;
+          color: white;
+        }
+        body.dark .delete-btn:hover, body.dark .delete-all-btn:hover {
+          background-color: #d32f2f;
+        }
+        body.dark #versionInfo {
+          background-color: #333;
+        }
+        #theme-toggle {
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          padding: 5px 10px;
+          background-color: #333;
+          color: white;
+          border: none;
+          cursor: pointer;
+          font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -221,19 +271,31 @@ function translateText(text) {
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-    updatePlaceholder();
+            updatePlaceholder();
+            updateTheme();
 
-    var userQuestionInput = document.getElementById("userQuestion");
+            var userQuestionInput = document.getElementById("userQuestion");
 
-    userQuestionInput.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            callMistralAPI();
-        }
-    });
+            userQuestionInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    callMistralAPI();
+                }
+            });
+            
+            document.getElementById("theme-toggle").addEventListener("click", function () {
+                document.body.classList.toggle("dark");
+                if (document.body.classList.contains("dark")) {
+                    this.textContent = "Thème clair";
+                    localStorage.setItem('theme', 'dark'); // Ajoutez cette ligne
+                } else {
+                    this.textContent = "Thème sombre";
+                    localStorage.removeItem('theme'); // Ajoutez cette ligne
+                }
+            });
 
-    // Ajoutez cet appel pour mettre à jour la langue lors du chargement de la page
-    changeLanguage(false);
-});
+            // Ajoutez cet appel pour mettre à jour la langue lors du chargement de la page
+            changeLanguage(false);
+        });
     </script>
     <label for="languageSelect">Choisir la langue :</label>
     <select id="languageSelect" onchange="changeLanguage(false)">
@@ -241,7 +303,7 @@ function translateText(text) {
         <option value="english">English</option>
         <option value="español">Español</option>
         <option value="deutsch">Deutsch</option>
-    </select>
+    </select> 
 
     <h1>Interface Mistral API</h1>
     
@@ -264,12 +326,10 @@ function translateText(text) {
         <button onclick="callMistralAPI()">Envoyer la question</button>
         <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
     </div>    
-
     <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
         <button onclick="requestAPIKey()">Changer la clé API</button>
+        <button id="theme-toggle" style="position: fixed; top: 50px; right: 10px;">Thème sombre</button>
     </div>
-    
-    
     
     <div id="response"></div>
     <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
@@ -278,7 +338,7 @@ function translateText(text) {
     <div id="history"></div>    
     <div id="warning" class="warning-container">
         <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
-    </div> 
+    </div>   
 <script>
 function changeLanguage(sendRequest = true) {
     var selectedLanguage = document.getElementById("languageSelect").value;
@@ -297,6 +357,7 @@ function changeLanguage(sendRequest = true) {
 
     updatePlaceholder();
 }
+
 
 function updateInterfaceTexts() {
     // Obtenez la langue sélectionnée
@@ -497,8 +558,16 @@ function updateResponse(content) {
             history = [];
             saveHistory();
             }
-
-
+            function updateTheme() {
+                var savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark');
+                    document.getElementById("theme-toggle").textContent = "Thème clair";
+                } else {
+                    document.body.classList.remove('dark');
+                    document.getElementById("theme-toggle").textContent = "Thème sombre";
+                }
+            }
 
             function renderHistory() {
                 const historyDiv = document.getElementById("history");
@@ -593,6 +662,6 @@ function updateResponse(content) {
             
         </section>
     </footer>
-    <div id="versionInfo">v 0.0.94</div>
+    <div id="versionInfo">v 0.0.95</div>
 </body>
 </html>
