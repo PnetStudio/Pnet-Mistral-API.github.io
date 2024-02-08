@@ -53,17 +53,10 @@ function translateText(text) {
             // ... autres langues ...
         },
         "Nouvelle conversation": {
-            "français": "Nouvelle conversation",
-            "english": "New conversation",
-            "español": "Nueva conversación",
-            "deutsch": "Neues Gespräch",
-            // ... d'autres langues ...
-        },
-        "Nouvelle conversation": {
-        "français": "Nouvelle conversation",
-        "english": "New conversation",
-        "español": "Nueva conversación",
-        "deutsch": "Neues Gespräch",
+        "français": "Archiver la conversation",
+        "english": "Archive conversation",
+        "español": "Archivar conversación",
+        "deutsch": "Konversation archivieren",
         // ... autres langues ...
         },
         "Voir l'historique archivé": {
