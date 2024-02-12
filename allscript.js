@@ -1,4 +1,4 @@
-var showArchivedHistory = false;
+var showArchivedHistory = false; // a tester true
 
 function requestAPIKey() {
     var apiKey = prompt("Veuillez entrer votre clé API Mistral / Please enter your Mistral API key :");
@@ -147,12 +147,13 @@ function callMistralAPI() {
             var result = JSON.parse(xhr.responseText);
             var content = result['choices'][0]['message']['content'];
 
-
             // Met à jour la réponse dans l'interface
             updateResponse(content);
 
             // Ajoute à l'historique
             addToHistory(question, content, selectedModel);
+            //teste update history
+            renderHistory();
         } else {
             console.error("Error during request. Status code:", xhr.status);
             document.getElementById("response").innerHTML = "<p>Error during request. Status code: " + xhr.status + '</p>';
