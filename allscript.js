@@ -1,5 +1,4 @@
-var showArchivedHistory = false; // a tester true
-
+var showArchivedHistory = false; 
 function requestAPIKey() {
     var apiKey = prompt("Veuillez entrer votre clé API Mistral / Please enter your Mistral API key :");
     if (apiKey) {

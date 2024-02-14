@@ -1,9 +1,11 @@
+<!--
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Interface de l'API Mistral</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <script src="translate.js"></script>
@@ -73,5 +75,84 @@
         </section>
     </footer>
     <div id="versionInfo">v 1.1.1</div>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>Interface de l'API Mistral</title>
+</head>
+<body>
+  <script src="translate.js"></script>
+  <script src="allscript.js"></script>
+  <div class="container">
+    <label for="languageSelect">Choisir la langue :</label>
+    <select id="languageSelect" onchange="changeLanguage(false)">
+      <option value="français">Français</option>
+      <option value="english">English</option>
+      <option value="español">Español</option>
+      <option value="deutsch">Deutsch</option>
+    </select>
+    <h1>Interface Mistral API</h1>
+    <h2>Choisir un modèle</h2>
+    <div>
+      <label for="modelTiny">mistral-tiny</label>
+      <input type="radio" id="modelTiny" name="model" value="mistral-tiny">
+    </div>
+    <div>
+      <label for="modelSmall">mistral-small</label>
+      <input type="radio" id="modelSmall" name="model" value="mistral-small" checked>
+    </div>
+    <div>
+      <label for="modelMedium">mistral-medium</label>
+      <input type="radio" id="modelMedium" name="model" value="mistral-medium">
+    </div><br><br>
+    <textarea id="userQuestion" placeholder="Entrez votre question ici"></textarea>
+    <button id="sendQuestionBtn" onclick="callMistralAPI()">Envoyer la question</button>
+    <img id="loading-icon" src="chemin_vers_votre_icone_de_chargement" alt="Loading..." style="display: none;">
+    <button class="new-conversation-btn" onclick="startNewConversation()">Nouvelle conversation</button>
+  </div>
+  <div id="apiKeyContainer" style="position: fixed; top: 10px; right: 10px;">
+    <button onclick="requestAPIKey()">Changer la clé API</button>
+    <button id="theme-toggle" style="position: fixed; top: 50px; right: 10px;">Dark</button>
+  </div>
+  <div id="response"></div>
+  <button class="toggle-history-btn" onclick="toggleHistoryView()">Voir l'historique archivé</button>
+  <h2 class="history-title">Historique des Questions/Réponses</h2>
+  <button class="delete-all-btn" onclick="clearHistory()">Supprimer tout l'historique</button>
+  <div id="history"></div>
+  <div id="warning" class="warning-container">
+    <p><s>ChatGPT</s> Mistral AI can make mistakes. Consider checking important information.</p>
+  </div>
+  <br><br><br><br><br><br>
+  <footer>
+    <section id="legal-notice">
+      <h2>Legal Notice</h2>
+
+      <p>This website is the property of © 2024 PNETStudio.</p>
+
+      <p>PNETStudio<br>
+        Email: pnet.group@outlook.com</p>
+      <p>Design and Development: ©PNETStudio</p>
+
+      <h3>Personal Data Protection</h3>
+
+      <p>What are these?</p>
+
+      <h3>Terms of Use</h3>
+
+      <p>By using this site, you agree to the current terms of use. © 2024 PNETStudio reserves the right to modify these terms at any time, without prior notice.</p>
+
+      <h3>Contact</h3>
+
+      <p>You can contact us at the following address: pnet.group@outlook.com</p>
+    </section>
+  </footer>
+  <div id="versionInfo">v 1.1.2</div>
 </body>
 </html>
